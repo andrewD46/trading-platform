@@ -5,6 +5,7 @@ from django.db import models
 # Create your models here.
 class StockBase(models.Model):
     """Base"""
+
     code = models.CharField("Code", max_length=8, unique=True)
     name = models.CharField("Name", max_length=128, unique=True)
 
@@ -25,33 +26,46 @@ class Currency(StockBase):
 
 class Item(StockBase):
     """Particular stock"""
+
     price = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
-    currency = models.ForeignKey(Currency, blank=True, null=True, on_delete=models.SET_NULL)
+    currency = models.ForeignKey(
+        Currency, blank=True, null=True, on_delete=models.SET_NULL
+    )
     details = models.TextField("Details", blank=True, null=True, max_length=512)
 
 
 class WatchList(models.Model):
     """Current user, favorite list of stocks"""
+
     user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
     item = models.ForeignKey(Item, blank=True, null=True, on_delete=models.SET_NULL)
 
 
 class Price(models.Model):
     """Item price"""
-    currency = models.ForeignKey(Currency, blank=True, null=True, on_delete=models.SET_NULL)
-    item = models.ForeignKey(Item, blank=True, null=True, on_delete=models.CASCADE, related_name='price',
-                             related_query_name='prices', )
+
+    currency = models.ForeignKey(
+        Currency, blank=True, null=True, on_delete=models.SET_NULL
+    )
+    item = models.ForeignKey(
+        Item,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name="price",
+        related_query_name="prices",
+    )
     price = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
-    date = models.DateTimeField(unique=True, blank=True, null=True, )
+    date = models.DateTimeField(unique=True, blank=True, null=True)
 
 
 class Offer(models.Model):
     """Request to buy or sell specific stocks"""
 
     ORDER_TYPE = [
-        (0, 'Created'),
-        (1, 'Inprocess'),
-        (2, 'Done'),
+        (0, "Created"),
+        (1, "Inprocess"),
+        (2, "Done"),
     ]
 
     user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
@@ -65,6 +79,7 @@ class Offer(models.Model):
 
 class Inventory(models.Model):
     """The number of stocks a particular user has"""
+
     user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
     item = models.ForeignKey(Item, blank=True, null=True, on_delete=models.SET_NULL)
     quantity = models.IntegerField("Stocks quantity", default=0)
@@ -72,22 +87,23 @@ class Inventory(models.Model):
 
 class Trade(models.Model):
     """Information about a certain transaction"""
+
     item = models.ForeignKey(Item, blank=True, null=True, on_delete=models.SET_NULL)
     seller = models.ForeignKey(
         User,
         blank=True,
         null=True,
         on_delete=models.SET_NULL,
-        related_name='seller_trade',
-        related_query_name='seller_trade',
+        related_name="seller_trade",
+        related_query_name="seller_trade",
     )
     buyer = models.ForeignKey(
         User,
         blank=True,
         null=True,
         on_delete=models.SET_NULL,
-        related_name='buyer_trade',
-        related_query_name='buyer_trade',
+        related_name="buyer_trade",
+        related_query_name="buyer_trade",
     )
     quantity = models.IntegerField()
     unit_price = models.DecimalField(max_digits=7, decimal_places=2)
@@ -97,14 +113,14 @@ class Trade(models.Model):
         blank=True,
         null=True,
         on_delete=models.SET_NULL,
-        related_name='buyer_trade',
-        related_query_name='buyer_trade',
+        related_name="buyer_trade",
+        related_query_name="buyer_trade",
     )
     seller_offer = models.ForeignKey(
         Offer,
         blank=True,
         null=True,
         on_delete=models.SET_NULL,
-        related_name='seller_trade',
-        related_query_name='seller_trade',
+        related_name="seller_trade",
+        related_query_name="seller_trade",
     )
