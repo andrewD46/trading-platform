@@ -16,8 +16,10 @@ class StockBase(models.Model):
 class Currency(StockBase):
     """Currency"""
 
+    is_active = models.BooleanField(default=True)
+
     def __str__(self):
-        return self.code
+        return self.name
 
     class Meta:
         verbose_name = "Currency"
@@ -26,11 +28,9 @@ class Currency(StockBase):
 
 class Item(StockBase):
     """Particular stock"""
-
-    price = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
-    currency = models.ForeignKey(
-        Currency, blank=True, null=True, on_delete=models.SET_NULL
-    )
+    actual_price = models.IntegerField(blank=True, unique=True)
+    is_active = models.BooleanField(default=True)
+    currency = models.ForeignKey(Currency, blank=True, null=True, on_delete=models.SET_NULL)
     details = models.TextField("Details", blank=True, null=True, max_length=512)
 
 
