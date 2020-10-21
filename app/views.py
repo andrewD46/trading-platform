@@ -13,29 +13,29 @@ from .serializers import (
 
 class CurrencyViewSet(viewsets.ModelViewSet):
     serializer_class = CurrencySerializer
-    queryset = Currency
+    queryset = Currency.objects.all()
 
 
 class ItemViewSet(viewsets.ModelViewSet):
     serializer_class = ItemSerializer
-    queryset = Item
+    queryset = Item.objects.all()
 
 
 class WatchListViewSet(viewsets.ModelViewSet):
     serializer_class = WatchListSerializer
-    queryset = WatchList
+    queryset = WatchList.objects.all()
 
 
 class OfferViewSet(viewsets.ModelViewSet):
     serializer_class = OfferSerializer
-    queryset = Offer
+    queryset = Offer.objects.all()
 
 
 class InventoryViewSet(viewsets.ModelViewSet):
     serializer_class = InventorySerializer
-    queryset = Inventory
+    queryset = Inventory.objects.all()
 
 
 class TradeViewSet(viewsets.ModelViewSet):
     serializer_class = TradeSerializer
-    queryset = Trade
+    queryset = Trade.objects.all()

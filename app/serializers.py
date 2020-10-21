@@ -6,13 +6,13 @@ from .models import Currency, Item, WatchList, Price, Offer, Inventory, Trade
 class InventorySerializer(ModelSerializer):
     class Meta:
         model = Inventory
-        fields = ("id", "user", "item", "quantity", "url")
+        fields = "__all__"
 
 
 class WatchListSerializer(ModelSerializer):
     class Meta:
         model = WatchList
-        fields = ("id", "user", "item", "url")
+        fields = "__all__"
 
 
 class CurrencySerializer(ModelSerializer):
