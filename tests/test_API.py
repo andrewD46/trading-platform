@@ -9,7 +9,6 @@ from app.serializers import UserSerializer, CurrencySerializer, InventorySeriali
 
 @pytest.fixture
 def api_client():
-    """Function creates client object"""
     return APIClient()
 
 
@@ -41,7 +40,6 @@ def user_from_db(user):
 
 @pytest.fixture
 def create_currency():
-    """Function creates currencies objects"""
     Currency.objects.create(code='USD', name='Dollar')
     Currency.objects.create(code='EUR', name='Euro')
     currencies = Currency.objects.all()
@@ -50,7 +48,6 @@ def create_currency():
 
 @pytest.fixture
 def currency_serializes(create_currency):
-    """Function serializes currency obj"""
     serializer = CurrencySerializer(create_currency, many=True)
     serializer_data = serializer.data
     return serializer_data
@@ -82,7 +79,6 @@ def user_inventory_serializes(create_inventory):
 
 @pytest.fixture
 def create_offers(user_from_db, create_inventory):
-    """Func create offer in db"""
     inventory_obj = create_inventory[0]
     item = inventory_obj.item
     item_quantity = inventory_obj.quantity
@@ -112,7 +108,6 @@ def offer_serializes(create_offers):
 
 @pytest.fixture
 def create_watch_list(user_from_db, create_inventory):
-    """Func create offer in db"""
     inventory_obj = create_inventory[0]
     item = inventory_obj.item
     WatchList.objects.create(user=user_from_db, item=item)
@@ -147,16 +142,16 @@ def test_get_currency_with_pk(api_client, currency_serializes):
 
 
 @pytest.mark.django_db
-def test_get_inventory(api_client, user_inventory_serializers):
+def test_get_inventory(api_client, user_inventory_serializes):
     url = "/inventory/"
     response = api_client.get(url)
     response_data = response.data
-    assert user_inventory_serializers == response_data
+    assert user_inventory_serializes == response_data
 
 
 @pytest.mark.django_db
-def test_get_inventory_with_pk(api_client, user_inventory_serializers):
-    user_inventory_serializers_data = user_inventory_serializers[0]
+def test_get_inventory_with_pk(api_client, user_inventory_serializes):
+    user_inventory_serializers_data = user_inventory_serializes[0]
     inventory_id = user_inventory_serializers_data['id']
     url = f"/inventory/{inventory_id}/"
     response = api_client.get(url)

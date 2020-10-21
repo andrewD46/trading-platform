@@ -1,8 +1,12 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
 # Create your models here.
+class User(AbstractUser):
+    balance = models.DecimalField(max_digits=7, decimal_places=2, default=0.0)
+
+
 class StockBase(models.Model):
     """Base"""
 
@@ -63,9 +67,8 @@ class Offer(models.Model):
     """Request to buy or sell specific stocks"""
 
     ORDER_TYPE = [
-        (0, "Created"),
-        (1, "Inprocess"),
-        (2, "Done"),
+        (0, "sale"),
+        (1, "purchase"),
     ]
 
     user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
