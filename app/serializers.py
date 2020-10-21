@@ -1,6 +1,12 @@
 from rest_framework.serializers import ModelSerializer
 
-from .models import Currency, Item, WatchList, Price, Offer, Inventory, Trade
+from .models import Currency, Item, WatchList, Price, Offer, Inventory, Trade, User
+
+
+class UserSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = "__all__"
 
 
 class InventorySerializer(ModelSerializer):
